@@ -103,32 +103,42 @@ do {
 
             if(isset($arr['hints'][$i]['food']['foodContentsLabel'])) {
                 $foodContentsLabel = $arr['hints'][$i]['food']['foodContentsLabel'];
-                $status[] = "About $fruta, it has ".$kcal." calories, ".$protein."g of proteins, "
-                .$fat."g of fat (in general) and , ".$fiber."g of fiber.\r\n.It contains ".$foodContentsLabel."\r\nNotice: it's in 100 grams of $fruta";
+                $foodContents = explode(";", $foodContentsLabel);
+                $countContent = count($foodContents);
+                $lastContent = $foodContents[$countContent-1];
+                $status[$aux] = "About #$fruta, it has ".$kcal." calories, ".$protein."g of proteins, "
+                .$fat."g of fat (in general) and ".$fiber."g of fiber.\r\nIt contains";
+                foreach($foodContents as $content) {
+                    $content = trim($content);
+                    $status[$aux] .=' #'.$content; 
+
+                }
+                $status[$aux] .=".\r\nNotice: it's in 100 grams of $fruta";
                 $aux++;
             } else {
-                $status[] = "About $fruta, it has ".$kcal." calories, ".$protein."g of proteins, "
-                .$fat."g of fat (in general) and , ".$fiber."g of fiber.\r\nNotice: it's in 100 grams of $fruta";
+                $status[$aux] = "About #$fruta, it has ".$kcal." calories, ".$protein."g of proteins, "
+                .$fat."g of fat (in general) and ".$fiber."g of fiber.\r\nNotice: it's in 100 grams of $fruta";
                 $aux++;
                 
             }
-            /*if(strlen($status[$aux-1]) <=280){
+            if(strlen($status[$aux-1]) <=280){
                 echo "<br>"."<br>".$status[$aux-1]."<br>"."<br>";
-            }*/
+            }
         }   
 
     }
 
     if(count($status) > 0) {
-
+    
         for($i = 0; $i < $aux; $i++) {
             if(isset($status[$i]) && strlen($status[$i]) <=280) {
                 //echo "<br>"."<br>".$status[$i]."<br>"."<br>";
-
+                
                 $apiData = array(
                     'status' => "".$status[$i].""
                 );
-
+                
+                
                 $twitter = new TwitterAPIExchange($settings);
                 $twitter->buildOauth($url, $requestMethod);
 
@@ -137,7 +147,9 @@ do {
                 $response = $twitter->performRequest(true, array( CURLOPT_SSL_VERIFYHOST => 0, CURLOPT_SSL_VERIFYPEER => 0 ));
                 
             }
+
         }
+        //echo json_encode($status);
         $j++;
     }
 } while($j = 0);
