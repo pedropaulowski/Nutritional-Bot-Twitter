@@ -118,20 +118,23 @@ if ($err) {
 
 }
 /*
-for($i = 0; $i < $aux; $i++) {
-    if(isset($status[$i]) && strlen($status[$i]) <=280) {
-        $apiData = array(
-            'status' => "".$status[$i].""
-        );
+if(count($status) > 0) {
+    for($i = 0; $i < $aux; $i++) {
+        if(isset($status[$i]) && strlen($status[$i]) <=280) {
+            $apiData = array(
+                'status' => "".$status[$i].""
+            );
 
-        $twitter = new TwitterAPIExchange($settings);
-        $twitter->buildOauth($url, $requestMethod);
+            $twitter = new TwitterAPIExchange($settings);
+            $twitter->buildOauth($url, $requestMethod);
 
-        $twitter->setPostfields($apiData);
+            $twitter->setPostfields($apiData);
 
-        $response = $twitter->performRequest(true, array( CURLOPT_SSL_VERIFYHOST => 0, CURLOPT_SSL_VERIFYPEER => 0 ));
+            $response = $twitter->performRequest(true, array( CURLOPT_SSL_VERIFYHOST => 0, CURLOPT_SSL_VERIFYPEER => 0 ));
 
+        }
     }
 }
 */
+
 
